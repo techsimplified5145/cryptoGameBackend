@@ -299,4 +299,27 @@ router.put("/instructions/order/down/:type/:order", (req, res) => {
     });
 });
 
+
+router.get("/instruction/details/:id", (req, res) => {
+  InstructionsSchema.findById(req.params.id)
+    .then((instruction) => {
+      return res.status(200).json(instruction);
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(404).json(err);
+    });
+});
+
+router.get("/offer/details/:id", (req, res) => {
+  OfferSchema.findById(req.params.id)
+    .then((offer) => {
+      return res.status(200).json(offer);
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(404).json(err);
+    });
+});
+
 module.exports = router;

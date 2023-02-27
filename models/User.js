@@ -18,13 +18,21 @@ const UserSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    default:"authenticated"
+    default: "authenticated",
+  },
+  premium: {
+    transaction_hash: {
+      type: String,
+    },
+    bought_at: {
+      type: Date,
+    },
   },
   profit_tracker: [
     {
       date: {
         type: Date,
-        default: new Date()
+        default: new Date(),
       },
       bookmaker: {
         type: String,

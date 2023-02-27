@@ -34,12 +34,23 @@ router.get("/users/profits/", async (req, res) => {
     });
 });
 
+router.get("/premium/users/", async (req, res) => {
+  UserSchema.find({ role: "premium" })
+    .select(["email", "premium"])
+    .then((premium) => {
+      return res.status(200).json(premium);
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(400).json(err);
+    });
+});
+
 router.get("/testing", async (req, res) => {
   return res.status(400).json({ msg: "Server is up and running" });
 });
 
 router.get("/offers/:type", (req, res) => {
-  console.log(req.params.type);
   OfferSchema.find({ type: req.params.type })
     .sort("order")
     .then((offers) => {
@@ -298,7 +309,6 @@ router.put("/instructions/order/down/:type/:order", (req, res) => {
       return res.status(400).json(err);
     });
 });
-
 
 router.get("/instruction/details/:id", (req, res) => {
   InstructionsSchema.findById(req.params.id)

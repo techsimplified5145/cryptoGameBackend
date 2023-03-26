@@ -11,11 +11,11 @@ db.then(() => console.log("Connected to MongoDB.")).catch((err) =>
 );
 
 // Routes
-const adminRoutes = require('./routes/adminRoutes')
+const userRoutes = require('./routes/userRoutes')
 
 app.use(express.json());
 
-app.use(adminRoutes);
+app.use(userRoutes);
 
 app.listen(PORT, () => {
   console.log(`Admin app is running on port ${PORT}`);

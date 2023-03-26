@@ -13,45 +13,40 @@ const UserSchema = new mongoose.Schema({
   picture: {
     type: String,
   },
-  email_verified: {
-    type: Boolean,
-  },
-  role: {
+  wallet_address: {
     type: String,
-    default: "authenticated",
   },
-  premium: {
-    transaction_hash: {
-      type: String,
-    },
-    bought_at: {
-      type: Date,
-    },
+  private_key: {
+    type: String,
   },
-  profit_tracker: [
+  balance: {
+    type: Number,
+    default: 0,
+  },
+  games: [
     {
-      date: {
-        type: Date,
-        default: new Date(),
-      },
-      bookmaker: {
-        type: String,
-        required: true,
-      },
-      details: {
-        type: String,
-        required: true,
-      },
       amount: {
         type: Number,
-        required: true,
       },
-      type: {
+      result: {
         type: String,
-        required: true,
+      },
+      game: {
+        type: String,
+      },
+      win_chances: {
+        type: String,
       },
     },
   ],
+  transactions:[{
+    amount:{
+      type: String
+    },
+    block_number:{
+      type: String
+    },
+  }]
 });
 
 var User = mongoose.model("User", UserSchema);

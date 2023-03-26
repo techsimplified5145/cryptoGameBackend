@@ -9,7 +9,7 @@ function auth(req, res, next) {
 
   try {
     // Verify token
-    const decode = jwt.verify(JSON.parse(token), "Profit_Outcome@2023");
+    const decode = jwt.verify(JSON.parse(token), "CryptoGames@2023");
     // Add user from payload
     req.user = decode;
     next();

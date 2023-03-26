@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
 const UserSchema = require("../models/User");
 const ethers = require("ethers");
-const axios = require("axios");
 
 router.post("/user/save", async (req, res) => {
   console.log(req.body);

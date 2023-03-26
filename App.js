@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 7001;
-// const userRoutes = 
+const userRoutes = require("./routes/UserRoutes.js");
 const db = require("./database/database.js");
 
 const cors = require("cors");
@@ -15,7 +15,7 @@ db.then(() => console.log("Connected to MongoDB.")).catch((err) =>
 
 app.use(express.json());
 
-app.use(require('./routes/userRoutes.js'));
+app.use(userRoutes);
 
 app.listen(PORT, () => {
   console.log(`Admin app is running on port ${PORT}`);

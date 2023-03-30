@@ -4,18 +4,15 @@ const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
 const UserSchema = require("../models/User");
 const ethers = require("ethers");
+const WithdrawRequestsSchema = require("../models/WithdrawRequest");
 
 router.post("/user/save", async (req, res) => {
-  console.log(req.body);
   if (req.body.user?.email) {
     let user = await UserSchema.findOne({ email: req.body.user.email });
-    console.log("USER ALREADY", user);
     if (!user) {
       const wallet = ethers.Wallet.createRandom();
       const privateKey = wallet.privateKey; // save user private key in our database
       const wallet_address = wallet.address; // save user address in our database
-      console.log("Private key:", privateKey);
-      console.log("Wallet address:", wallet_address);
 
       const newUser = new UserSchema({
         email: req.body.user.email,
@@ -32,13 +29,11 @@ router.post("/user/save", async (req, res) => {
       return res.status(200).json(user);
     }
   } else {
-    console.log("USER ALREADY EXISTS");
     return res.status(400).json({ msg: "No email id" });
   }
 });
 
 router.post("/add/game/:user", async (req, res) => {
-  console.log("ADDING GAME", req.body);
   UserSchema.findByIdAndUpdate(
     req.params.user,
     {
@@ -63,7 +58,6 @@ router.post("/add/game/:user", async (req, res) => {
 });
 
 router.post("/add/transaction/:user", async (req, res) => {
-  console.log("ADDING transaction", req.body);
   UserSchema.findByIdAndUpdate(
     req.params.user,
     {
@@ -84,6 +78,36 @@ router.post("/add/transaction/:user", async (req, res) => {
     });
 });
 
+router.post("/withdraw/request", async (req, res) => {
+  const newWithDrawRequest = new WithdrawRequestsSchema({
+    user: req.body.user,
+    amount: req.body.amount,
+    address: req.body.address,
+  });
+  newWithDrawRequest.save().then(() => {
+    UserSchema.findByIdAndUpdate(req.body.user, {
+      balance: req.body.newBalance,
+    }).then(() => {
+      return res.status(200).json({
+        msg: "withdraw request sent",
+        newBalance: req.body.newBalance,
+      });
+    });
+  });
+});
+
+router.post("/update/balance/:user", async (req, res) => {
+console.log("balance updating")
+  UserSchema.findByIdAndUpdate(req.params.user, {
+    balance: req.body.newBalance,
+  }).then((response) => {
+    console.log("DONE",response)
+    return res.status(200).json({
+      msg: "Balance updated",
+      newBalance: req.body.newBalance,
+    });
+  });
+});
 router.get("/testing", async (req, res) => {
   return res.status(400).json({ msg: "Server is up and running" });
 });

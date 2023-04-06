@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
 const UserSchema = require("../models/User");
 const ethers = require("ethers");
-const WithdrawRequestsSchema = require("../models/WithdrawRequest");
+const WithdrawRequestsSchema = require("../models/WithdrawRequests");
 
 router.post("/user/save", async (req, res) => {
   if (req.body.user?.email) {
@@ -97,7 +97,7 @@ router.post("/withdraw/request", async (req, res) => {
 });
 
 router.post("/update/balance/:user", async (req, res) => {
-console.log("balance updating")
+console.log("balance updating",req.body)
   UserSchema.findByIdAndUpdate(req.params.user, {
     balance: req.body.newBalance,
   }).then((response) => {

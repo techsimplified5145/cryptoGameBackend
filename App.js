@@ -3,7 +3,7 @@ const app = express();
 const PORT = process.env.PORT || 7001;
 const userRoutes = require("./routes/UserRoutes.js");
 const db = require("./database/database.js");
-
+const adminRoutes = require("./routes/AdminRoutes.js");
 const cors = require("cors");
 app.use(cors());
 
@@ -16,6 +16,7 @@ db.then(() => console.log("Connected to MongoDB.")).catch((err) =>
 app.use(express.json());
 
 app.use(userRoutes);
+app.use(adminRoutes);
 
 const server = app.listen(PORT, () => {
   console.log(`Admin app is running on port ${PORT}`);
@@ -85,7 +86,7 @@ setInterval(startGame, 1 * 60 * 1000);
 io.on("connection", (socket) => {
   // send the current game state to the client when they connect
   socket.emit("gameStart", { startTime, endPoint });
-  
+
   socket.on("player-added", (data) => {
     console.log("player added".data);
     addPlayer(data.name, data.amount, data.id);

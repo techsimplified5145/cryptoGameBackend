@@ -23,6 +23,10 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  blocked: {
+    type: Boolean,
+    default: false,
+  },
   games: [
     {
       amount: {
@@ -39,14 +43,16 @@ const UserSchema = new mongoose.Schema({
       },
     },
   ],
-  transactions:[{
-    amount:{
-      type: String
+  transactions: [
+    {
+      amount: {
+        type: String,
+      },
+      block_number: {
+        type: String,
+      },
     },
-    block_number:{
-      type: String
-    },
-  }]
+  ],
 });
 
 var User = mongoose.model("User", UserSchema);

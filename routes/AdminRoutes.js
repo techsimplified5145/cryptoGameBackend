@@ -122,6 +122,15 @@ router.post("/admin/create", async (req, res) => {
 router.get("/total/payments", async (req, res) => {
   try {
     const payments = await WithdrawRequests.find();
+    const users = await UserSchema.find();
+    let totalProfit = 0;
+    users.forEach((user) => {
+      user.games.forEach((game) => {
+        if (game.result === "lose") {
+          totalProfit += game.amount;
+        }
+      });
+    });
     let rejectedTotal = 0;
     let releasedTotal = 0;
     let pendingTotal = 0;
@@ -142,6 +151,7 @@ router.get("/total/payments", async (req, res) => {
       rejected: rejectedTotal,
       released: releasedTotal,
       pending: pendingTotal,
+      profit: totalProfit,
     };
     res.status(200).json(totals);
   } catch (error) {

@@ -97,17 +97,30 @@ router.post("/withdraw/request", async (req, res) => {
 });
 
 router.post("/update/balance/:user", async (req, res) => {
-console.log("balance updating",req.body)
+  console.log("balance updating", req.body);
   UserSchema.findByIdAndUpdate(req.params.user, {
     balance: req.body.newBalance,
   }).then((response) => {
-    console.log("DONE",response)
+    console.log("DONE", response);
     return res.status(200).json({
       msg: "Balance updated",
       newBalance: req.body.newBalance,
     });
   });
 });
+
+router.get("/transaction/history/:user", async (req, res) => {
+  WithdrawRequestsSchema.find({
+    user: req.params.user,
+  })
+    .then((response) => {
+      return res.status(200).json(response);
+    })
+    .catch((e) => {
+      return res.status(400).json({ error: e });
+    });
+});
+
 router.get("/testing", async (req, res) => {
   return res.status(400).json({ msg: "Server is up and running" });
 });

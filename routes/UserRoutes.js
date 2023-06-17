@@ -67,11 +67,12 @@ router.post("/add/transaction/:user", async (req, res) => {
           block_number: req.body.block_number,
         },
       },
-      $inc: { balance: req.body.amount },
+      $inc: { balance: Number(req.body.amount) },
     },
     { new: true }
   )
     .then((user) => {
+      console.log(user)
       return res.status(200).json(user);
     })
     .catch((e) => {

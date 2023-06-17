@@ -67,6 +67,7 @@ router.post("/add/transaction/:user", async (req, res) => {
           block_number: req.body.block_number,
         },
       },
+      $inc: { balance: req.body.amount },
     },
     { new: true }
   )
